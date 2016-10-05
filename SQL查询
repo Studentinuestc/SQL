@@ -1,10 +1,11 @@
 SELECT [ALL|DISTINCT] [TOP<数值>[PERCENT]]
         * | [别名]<输入列>[AS别名][,[别名.]<输入列>[AS别名]...]
     [INTO 表名]
-    FORM<数据源>[[AS]别名][ INNER|LEFT|RIGHT JOIN<数据源>[[AS]别名][ON<链接条件>...]]
+    FROM<数据源>[[AS]别名][ INNER|LEFT|RIGHT JOIN<数据源>[[AS]别名][ON<链接条件>...]]
     [WHERE<条件表达式>][AND | OR[条件表达式]...]
     [GROUP BY<分组项>[,<分组项>...][HAVING<统计结果过滤条件>]]
     [UNION SELECT语句]
     [ORDER BY<排序列>[ASC | DESC][,<排序列>[ASC | DESC]...]]
 //FRO EXAMPLE
-SELECT 
+SELECT *
+   FROM((学院 INNER JOIN 专业 ON 学院编号=专业.学院编号) INNER JOIN 学生 ON 专业.专业编号=学生.专业编号);
