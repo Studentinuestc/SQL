@@ -9,3 +9,4 @@ SELECT [ALL|DISTINCT] [TOP<数值>[PERCENT]]
 //FRO EXAMPLE
 SELECT *
    FROM((学院 INNER JOIN 专业 ON 学院编号=专业.学院编号) INNER JOIN 学生 ON 专业.专业编号=学生.专业编号);
+   
