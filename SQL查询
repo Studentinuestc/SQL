@@ -7,6 +7,33 @@ SELECT [ALL|DISTINCT] [TOP<数值>[PERCENT]]
     [UNION SELECT语句]
     [ORDER BY<排序列>[ASC | DESC][,<排序列>[ASC | DESC]...]]
 //FRO EXAMPLE
+//查询“学院，专业，学生”完整数据
 SELECT *
    FROM((学院 INNER JOIN 专业 ON 学院编号=专业.学院编号) INNER JOIN 学生 ON 专业.专业编号=学生.专业编号);
-   
+//查询“工商管理”专业所有女生的信息
+SELECT 专业名称，学生，*
+   FROM 专业 INNER JOIN 学生 ON 专业.专业编号=学生.专业编号
+  WHERE 专业.专业名称=“工商管理” AND 学生.姓名=“女”；
+//查询作为“项目负责人”的学生的学号，姓名，性别。保存“负责人”查询
+SELECT 学生.学号,姓名,性别
+   FROM 学生 INNER JOIN 项目分工 ON 学生.学号=项目分工.学号
+  WHERE 分工=“负责人”;
+//查询没有参与项目的学生学号，姓名，专业名称
+SELECT 学号,姓名,性别
+    FROM 学生 INNER JOIN 专业 ON 学生.专业编号=专业.专业编号
+  WHERE 学号 NOT IN (SELECT 学号 FROM 项目分工);
+//查询参与项目超过1项的学生，姓名和参与项目数
+SELECT 学生,学号,姓名,COUNT(*)
+   FROM 学生 INNER JOIN 项目分工  ON 学生.学号=项目分工.学号
+  GROUP BY 学生.学号,姓名
+  HAVING COUNT(*)>1；
+//查询参与项目最多的学生学号，姓名和参与项目
+SELECT TOP 1 学生.学号,姓名,COUNT（*）AS 参与项目数
+   FROM 学生 INNER JOIN 项目分工 ON 学生.学号=项目分工.学号
+  GORUP BY 学生.学号, 姓名
+  ORDER BY COUNT（*）DESC；
+//查询与农村或农业有关的项目及负责人姓名
+SELECT 项目.#,姓名
+   FROM (学生 INNER JOIN 项目分工 ON 学生.学号=项目分工.学号)
+           INNER JOIN 项目 ON 项目.项目编号=项目分工.项目编号
+  WHERE 分工="负责人" AND (项目名称 LINK"*农业*" OR项目名称 LINK"*农村*")；
